@@ -1,0 +1,1 @@
+export * from "github:angular/di.js@master/index";
