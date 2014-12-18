@@ -32,7 +32,7 @@ define(function (require) {
 });
 })(typeof define === 'function' && define.amd ? define : function (factory) { module.exports = factory(require); });
 
-},{"./Scheduler":3,"./env":5,"./makePromise":7}],3:[function(require,module,exports){
+},{"./Scheduler":3,"./env":5,"./makePromise":6}],3:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -123,7 +123,6 @@ define(function() {
 define(function(require) {
 
 	var setTimer = require('../env').setTimer;
-	var format = require('../format');
 
 	return function unhandledRejection(Promise) {
 		var logError = noop;
@@ -163,7 +162,7 @@ define(function(require) {
 		function report(r) {
 			if(!r.handled) {
 				reported.push(r);
-				logError('Potentially unhandled rejection [' + r.id + '] ' + format.formatError(r.value));
+				logError('Potentially unhandled rejection [' + r.id + '] ' + formatError(r.value));
 			}
 		}
 
@@ -171,7 +170,7 @@ define(function(require) {
 			var i = reported.indexOf(r);
 			if(i >= 0) {
 				reported.splice(i, 1);
-				logInfo('Handled previous rejection [' + r.id + '] ' + format.formatObject(r.value));
+				logInfo('Handled previous rejection [' + r.id + '] ' + formatObject(r.value));
 			}
 		}
 
@@ -192,6 +191,28 @@ define(function(require) {
 		return Promise;
 	};
 
+	function formatError(e) {
+		var s = typeof e === 'object' && e.stack ? e.stack : formatObject(e);
+		return e instanceof Error ? s : s + ' (WARNING: non-Error used)';
+	}
+
+	function formatObject(o) {
+		var s = String(o);
+		if(s === '[object Object]' && typeof JSON !== 'undefined') {
+			s = tryStringify(o, s);
+		}
+		return s;
+	}
+
+	function tryStringify(e, defaultValue) {
+		try {
+			return JSON.stringify(e);
+		} catch(e) {
+			// Ignore. Cannot JSON.stringify e, stick with String(e)
+			return defaultValue;
+		}
+	}
+
 	function throwit(e) {
 		throw e;
 	}
@@ -201,7 +222,7 @@ define(function(require) {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(require); }));
 
-},{"../env":5,"../format":6}],5:[function(require,module,exports){
+},{"../env":5}],5:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -277,64 +298,6 @@ define(function(require) {
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(require); }));
 
 },{}],6:[function(require,module,exports){
-/** @license MIT License (c) copyright 2010-2014 original author or authors */
-/** @author Brian Cavalier */
-/** @author John Hann */
-
-(function(define) { 'use strict';
-define(function() {
-
-	return {
-		formatError: formatError,
-		formatObject: formatObject,
-		tryStringify: tryStringify
-	};
-
-	/**
-	 * Format an error into a string.  If e is an Error and has a stack property,
-	 * it's returned.  Otherwise, e is formatted using formatObject, with a
-	 * warning added about e not being a proper Error.
-	 * @param {*} e
-	 * @returns {String} formatted string, suitable for output to developers
-	 */
-	function formatError(e) {
-		var s = typeof e === 'object' && e !== null && e.stack ? e.stack : formatObject(e);
-		return e instanceof Error ? s : s + ' (WARNING: non-Error used)';
-	}
-
-	/**
-	 * Format an object, detecting "plain" objects and running them through
-	 * JSON.stringify if possible.
-	 * @param {Object} o
-	 * @returns {string}
-	 */
-	function formatObject(o) {
-		var s = String(o);
-		if(s === '[object Object]' && typeof JSON !== 'undefined') {
-			s = tryStringify(o, s);
-		}
-		return s;
-	}
-
-	/**
-	 * Try to return the result of JSON.stringify(x).  If that fails, return
-	 * defaultValue
-	 * @param {*} x
-	 * @param {*} defaultValue
-	 * @returns {String|*} JSON.stringify(x) or defaultValue
-	 */
-	function tryStringify(x, defaultValue) {
-		try {
-			return JSON.stringify(x);
-		} catch(e) {
-			return defaultValue;
-		}
-	}
-
-});
-}(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
-
-},{}],7:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -1366,8 +1329,7 @@ function logloads(loads) {
 
 (function() {
   var Promise = __global.Promise || require('when/es6-shim/Promise');
-  if (__global.console)
-    console.assert = console.assert || function() {};
+  console.assert = console.assert || function() {};
 
   // IE8 support
   var indexOf = Array.prototype.indexOf || function(item) {
@@ -1435,7 +1397,7 @@ function logloads(loads) {
         load = createLoad(name);
         load.status = 'linked';
         // https://bugs.ecmascript.org/show_bug.cgi?id=2795
-        load.module = loader.modules[name];
+        // load.module = loader.modules[name];
         return load;
       }
 
@@ -1511,7 +1473,7 @@ function logloads(loads) {
       if (instantiateResult === undefined) {
         load.address = load.address || '<Anonymous Module ' + ++anonCnt + '>';
 
-        // instead of load.kind, use load.isDeclarative
+        // NB instead of load.kind, use load.isDeclarative
         load.isDeclarative = true;
         // parse sets load.declare, load.depsList
         loader.loaderObj.parse(load);
@@ -1603,10 +1565,12 @@ function logloads(loads) {
       if (loader.modules[name])
         throw new TypeError('"' + name + '" already exists in the module table');
 
-      // adjusted to pick up existing loads
+      // NB this still seems wrong for LoadModule as we may load a dependency
+      // of another module directly before it has finished loading.
+      // see https://bugs.ecmascript.org/show_bug.cgi?id=2994
       for (var i = 0, l = loader.loads.length; i < l; i++)
         if (loader.loads[i].name == name)
-          return resolve(loader.loads[i].linkSets[0].done);
+          throw new TypeError('"' + name + '" already loading');
 
       var load = createLoad(name);
 
@@ -2344,6 +2308,8 @@ function logloads(loads) {
 
       console.assert(load.source, 'Non-empty source');
 
+      var depsList;
+
       load.isDeclarative = true;
 
       var options = this.traceurOptions || {};
@@ -2361,10 +2327,8 @@ function logloads(loads) {
 
       var sourceMap = compiler.getSourceMap();
 
-      if (__global.btoa && sourceMap) {
-        source += '\n//# sourceURL=' + load.address + '!eval';
+      if (__global.btoa && sourceMap)
         source += '\n//# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(sourceMap))) + '\n';
-      }
 
       source = 'var __moduleAddress = "' + load.address + '";' + source;
 
@@ -2452,7 +2416,6 @@ function logloads(loads) {
     fetchTextFromURL = function(url, fulfill, reject) {
       var xhr = new XMLHttpRequest();
       var sameDomain = true;
-      var doTimeout = false;
       if (!('withCredentials' in xhr)) {
         // check if same domain
         var domainCheck = /^(\w+:)?\/\/([^\/]+)/.exec(url);
@@ -2467,9 +2430,10 @@ function logloads(loads) {
         xhr.onload = load;
         xhr.onerror = error;
         xhr.ontimeout = error;
+        // IE8/IE9 bug may hang requests unless all properties are defined. 
+        // See: http://stackoverflow.com/a/9928073/3949247
         xhr.onprogress = function() {};
         xhr.timeout = 0;
-        doTimeout = true;
       }
       function load() {
         fulfill(xhr.responseText);
@@ -2488,12 +2452,6 @@ function logloads(loads) {
         }
       };
       xhr.open("GET", url, true);
-
-      if (doTimeout)
-        setTimeout(function() {
-          xhr.send();
-        }, 0);
-
       xhr.send(null);
     }
   }
@@ -2708,10 +2666,7 @@ function logloads(loads) {
         var script = scripts[i];
         if (script.type == 'module') {
           var source = script.innerHTML.substr(1);
-          // It is important to reference the global System, rather than the one
-          // in our closure. We want to ensure that downstream users/libraries
-          // can override System w/ custom behavior.
-          __global.System.module(source)['catch'](function(err) { setTimeout(function() { throw err; }); });
+          System.module(source)['catch'](function(err) { setTimeout(function() { throw err; }); });
         }
       }
     }
