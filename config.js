@@ -7,7 +7,7 @@ System.config({
 
 System.config({
   "map": {
-    "di": "github:angular/di.js@master"
+    "angular": "github:angular/bower-angular@1.3.8"
   }
 });
 
