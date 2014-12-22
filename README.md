@@ -1,4 +1,4 @@
-di2-es6-sample
+jspm-karma-sample
 ==============
 ```
 npm install
