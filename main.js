@@ -1,7 +1,7 @@
 import angular from 'angular';
 
-let myModule = angular.module('myModule', []);
+let myApp = angular.module('myApp', []);
 
-myModule.controller('myController', [function() {
+myApp.controller('myController', [function() {
   this.name = 'test controller';
 }]);
