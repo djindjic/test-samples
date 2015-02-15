@@ -9999,6 +9999,8 @@ System.register("file:/home/aleksandar/projects/babel/main", ["angular"], functi
       myApp.controller("myController", [function () {
         this.name = "test controller";
       }]);
+
+      console.log("app works");
     }
   };
 });
