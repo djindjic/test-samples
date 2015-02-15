@@ -1,0 +1,11 @@
+{
+  "jspm": {
+    "directories": {
+      "lib": ".",
+      "packages": "jspm_packages"
+    },
+    "dependencies": {
+      "angular": "^1.3.13"
+    }
+  }
+}

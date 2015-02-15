@@ -1,0 +1,15 @@
+<html ng-app="myModule">
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <script src="jspm_packages/system.js"></script>
+    <script src="config.js"></script>
+    <script>
+      System.import("main");
+    </script>
+    <div ng-controller="myController as ctrl">
+      <span>{{ctrl.name}}</span>
+    </div>
+  </body>
+</html>
