@@ -9973,7 +9973,7 @@ System.register("github:angular/bower-angular@1.3.13/angular", [], false, functi
 
 
 
-System.register("myControllerModule", ["angular"], function (_export) {
+System.register("myController", ["angular"], function (_export) {
   "use strict";
 
   var angular, myControllerModule;
@@ -10002,7 +10002,7 @@ System.register("github:angular/bower-angular@1.3.13", ["github:angular/bower-an
 
 
 
-System.register("main", ["angular", "myControllerModule"], function (_export) {
+System.register("main", ["angular", "myController.module"], function (_export) {
   "use strict";
 
   var angular, myControllerModule, myApp;

@@ -8,7 +8,7 @@ System.config({
   "bundles": {
     "bundle": [
       "github:angular/bower-angular@1.3.13/angular",
-      "myControllerModule",
+      "myController.module",
       "github:angular/bower-angular@1.3.13",
       "main"
     ]
