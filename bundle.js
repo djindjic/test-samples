@@ -9984,7 +9984,7 @@ System.register("github:angular/bower-angular@1.3.13", ["github:angular/bower-an
 
 
 
-System.register("file:/home/aleksandar/projects/babel/main", ["angular"], function (_export) {
+System.register("main", ["angular"], function (_export) {
   "use strict";
 
   var angular, myApp;
