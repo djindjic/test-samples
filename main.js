@@ -1,5 +1,5 @@
 import angular from 'angular';
-import {myControllerModule} from 'myController.module';
+import {myControllerModule} from 'myControllerModule';
 
 let myApp = angular.module('myApp', [
   myControllerModule.name

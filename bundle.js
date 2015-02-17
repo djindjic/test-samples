@@ -9973,26 +9973,24 @@ System.register("github:angular/bower-angular@1.3.13/angular", [], false, functi
 
 
 
-System.register("myController.module", ["angular"], function($__export) {
+System.register("myControllerModule", ["angular"], function (_export) {
   "use strict";
-  var __moduleName = "myController.module";
-  var angular,
-      myControllerModule;
+
+  var angular, myControllerModule;
   return {
-    setters: [function($__m) {
-      angular = $__m.default;
+    setters: [function (_angular) {
+      angular = _angular["default"];
     }],
-    execute: function() {
-      myControllerModule = $__export("myControllerModule", angular.module('myControllerModule', []));
-      myControllerModule.controller('myController', [function() {
-        this.name = 'test controller';
+    execute: function () {
+      myControllerModule = _export("myControllerModule", angular.module("myControllerModule", []));
+
+
+      myControllerModule.controller("myController", [function () {
+        this.name = "test controller";
       }]);
     }
   };
 });
-
-
-
 System.register("github:angular/bower-angular@1.3.13", ["github:angular/bower-angular@1.3.13/angular"], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
@@ -10004,24 +10002,19 @@ System.register("github:angular/bower-angular@1.3.13", ["github:angular/bower-an
 
 
 
-System.register("main", ["angular", "myController.module"], function($__export) {
+System.register("main", ["angular", "myControllerModule"], function (_export) {
   "use strict";
-  var __moduleName = "main";
-  var angular,
-      myControllerModule,
-      myApp;
+
+  var angular, myControllerModule, myApp;
   return {
-    setters: [function($__m) {
-      angular = $__m.default;
-    }, function($__m) {
-      myControllerModule = $__m.myControllerModule;
+    setters: [function (_angular) {
+      angular = _angular["default"];
+    }, function (_myControllerModule) {
+      myControllerModule = _myControllerModule.myControllerModule;
     }],
-    execute: function() {
-      myApp = angular.module('myApp', [myControllerModule.name]);
+    execute: function () {
+      myApp = angular.module("myApp", [myControllerModule.name]);
     }
   };
 });
-
-
-
-//# sourceMappingURL=bundleDotedFilenameTraceur.js.map
+//# sourceMappingURL=bundle.js.map
