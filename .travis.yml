@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "0.10"
+
+before_script:
+  - npm install -g jspm
+  - jspm config endpoints.github.auth $JSPM_AUTH
+  - jspm install
+script:
+  - divshot push development -t $DIVSHOT_KEY
+  - protractor --baseUrl='http://development.famous-sample.divshot.io/' protractor.conf.js

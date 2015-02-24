@@ -5,7 +5,8 @@
       "packages": "jspm_packages"
     },
     "dependencies": {
-      "angular": "^1.3.13"
+      "angular": "github:angular/bower-angular@^1.3.13",
+      "famous-angular": "github:Famous/famous-angular@^0.5.2"
     }
   }
 }
