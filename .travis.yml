@@ -8,4 +8,4 @@ before_script:
   - jspm config endpoints.github.auth $JSPM_AUTH
   - jspm install
 script:
-  - divshot push -t $DIVSHOT_KEY
+  - divshot push production -t $DIVSHOT_KEY
