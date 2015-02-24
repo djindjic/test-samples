@@ -9,4 +9,3 @@ before_script:
   - jspm install
 script:
   - divshot push development -t $DIVSHOT_KEY
-  - protractor --baseUrl='http://development.famous-sample.divshot.io/' protractor.conf.js
