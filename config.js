@@ -1,4 +1,5 @@
 System.config({
+  "transpiler": "traceur",
   "baseURL": "/",
   "paths": {
     "*": "*.js",
